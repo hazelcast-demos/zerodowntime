@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zerodowntime
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: parameters
+  namespace: zerodowntime
+data:
+  mysql_user: root
+  mysql_password: root
+  mysql_database: shop
