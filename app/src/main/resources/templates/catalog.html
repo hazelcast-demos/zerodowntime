@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments.html :: head(title='Catalog')">
+    <title>Catalog</title>
+</head>
+<body>
+<div class="container">
+    <nav th:replace="fragments.html :: navbar"></nav>
+    <div th:replace="fragments.html :: header(title='Welcome to our shop')"></div>
+    <div class="card-group" th:fragment="products">
+        <!--/*@thymesVar id="products" type="java.util.List<org.hazelcast.zerodowntime.entity.Product>"*/-->
+        <div class="card bg-light border-dark" th:each="product : ${products}">
+            <img class="card-img-top" th:src="${'image/'  + product.id + '.jpg'}" alt="Product's image">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${product.name}">Super cool name</h5>
+                <p class="card-text" th:text="${product.description}">A somewhat long and elaborate description of our super cool item</p>
+            </div>
+            <div class="card-footer text-center">
+                <a class="btn btn-success add-to-cart" th:data-product-id="${product.id}">
+                    Add to cart
+                    <span class="badge rounded-pill bg-light text-dark" th:text="${#numbers.formatCurrency(product.price)}"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments.html :: scripts"></div>
+<script type="module" th:src="@{/script/module/catalog.js}"></script>
+</body>
+</html>

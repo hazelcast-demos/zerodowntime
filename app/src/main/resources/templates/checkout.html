@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments.html :: head(title='Catalog')">
+    <title>Catalog</title>
+</head>
+<body>
+<div class="container">
+    <nav th:replace="fragments.html :: navbar"></nav>
+    <div th:replace="fragments.html :: header(title='One last step!')"></div>
+    <table class="table table-bordered">
+        <caption>Checkout summary</caption>
+        <thead class="table-secondary">
+        <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:id="'cart-line-' + ${lineId}" th:each="cartLine : ${checkout.cartLines}" th:with="lineId=${cartLine.id}">
+            <td>
+                <img class="img-thumbnail" src="../static/image/1.jpg" alt="Yo-Yo picture" th:src="${'image/'  + lineId + '.jpg'}" style="height: 80px;">
+                <span th:text="${cartLine.name}">Yo-Yo</span>
+            <td style="text-align:right" th:text="${cartLine.quantity}">25</td>
+            <td style="text-align:right" th:text="${#numbers.formatCurrency(cartLine.price)}">50.0</td>
+            <td style="text-align:center">
+                <span th:attr="data-line-id=${lineId}" class="bi bi-cart-x delete-cart-line"></span>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot class="table-secondary">
+        <tr>
+            <th colspan="2" scope="row">Total</th>
+            <th id="price" style="text-align:right" th:text="${#numbers.formatCurrency(checkout.price)}">50.0</th>
+            <td style="text-align:right">
+                <button type="button" class="btn btn-success">
+                    <span class="bi bi-credit-card"></span>
+                    To payment
+                </button>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<div th:replace="fragments.html :: scripts"></div>
+<script type="module" th:src="@{/script/module/checkout.js}"></script>
+</body>
+</html>

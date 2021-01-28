@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8"/>
+    <link th:href="@{/webjars/bootstrap/5.0.0-beta1/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/bootstrap-icons/1.3.0/font/bootstrap-icons.css}" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" th:href="@{/image/hazelcast-logo-bug.svg}" href="../static/image/hazelcast-logo-bug.svg">
+    <title th:text="'HZShop - ' + ${title}"></title>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light py-3 fs-4" style="background-color: #e3f2fd;" th:fragment="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" th:href="@{/}">
+                <img th:src="@{/image/hazelcast-logo-bug.svg}" src="../static/image/hazelcast-logo-bug.svg" class="align-middle" style="height: 40px;" alt="Shop's image">
+            </a>
+            <div class="collapse navbar-collapse justify-content-between" th:with="display=${#httpServletRequest.requestURI != '/checkout'}">
+                <ul class="navbar-nav" th:if="${display}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="catalog">Catalog</a>
+                    </li>
+                    <li class="nav-item dropdown" th:with="user=${session['org.springframework.session.FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME']?.name}">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" th:text="${user == null} ? 'Please choose a user' : ${user}"></a>
+                        <ul class="dropdown-menu" id="customers"></ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="checkout">
+                            <span id="cartIcon" class="bi bi-cart"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <span id="cartItemCount" class="badge bg-success"></span>
+                    </li>
+                </ul>
+                <ul class="navbar-nav" th:unless="${display}"></ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <span class="navbar-text" id="hostname"></span>
+                    </li>
+                    <li  class="nav-item px-3">
+                        <span class="navbar-text" id="version"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row" th:fragment="header(title)">
+        <h1 class="display-1" th:text="${title}"></h1>
+    </div>
+    <th:block th:fragment="scripts">
+        <script th:src="@{/webjars/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js}"></script>
+        <script type="module" th:src="@{/script/module/cart.js}"></script>
+        <script type="module" th:src="@{/script/module/customer.js}"></script>
+        <script type="module" th:src="@{/script/module/ops.js}"></script>
+        <script type="module" th:src="@{/script/module/util.js}"></script>
+    </th:block>
+</div>
+</body>
+</html>
