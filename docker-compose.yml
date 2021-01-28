@@ -1,0 +1,37 @@
+version: '3'
+services:
+  database:
+    container_name: eshop-db
+    image: mysql:8.0
+    command: mysqld --lower_case_table_names=1 --log-bin=ON --binlog_format=ROW --server-id=1 --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=shop
+    ports:
+      - 3306:3306
+    volumes:
+      - ./infrastructure/blue:/docker-entrypoint-initdb.d:ro
+  node1:
+    container_name: eshop-node1
+    image: hazelcast/hzshop:1.0
+    ports:
+      - 8081:8081
+    environment:
+      - server.port=8081
+      - spring.profiles.active=compose
+  node2:
+    container_name: eshop-node2
+    image: hazelcast/hzshop:1.0
+    ports:
+      - 8082:8082
+    environment:
+      - server.port=8082
+      - spring.profiles.active=compose
+  load-balancer:
+    container_name: eshop-lb
+    build: infrastructure/haproxy
+    ports:
+      - 80:80
+    depends_on:
+      - node1
+      - node2
