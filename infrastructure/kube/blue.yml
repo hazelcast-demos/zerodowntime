@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zerodowntime
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: zerodowntime
+  name: blue
+spec:
+  selector:
+    color: blue
+  ports:
+    - port: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blue
+  namespace: zerodowntime
+  labels:
+    color: blue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      color: blue
+  template:
+    metadata:
+      labels:
+        color: blue
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          args:
+            - mysqld
+            - --lower_case_table_names=1
+            - --log-bin=ON
+            - --binlog_format=ROW
+            - --server-id=1
+            - --default-authentication-plugin=mysql_native_password
+          env:
+            - name: MYSQL_DATABASE
+              value: shop
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d
+              name: initscripts
+      volumes:
+        - name: initscripts
+          hostPath:
+            path: /Users/nico/projects/hazelcast/zerodowntime/infrastructure/blue

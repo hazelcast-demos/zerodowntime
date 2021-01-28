@@ -1,0 +1,67 @@
+## Demo notes
+
+### Set up
+
+Set the Kubernetes context::
+[source,bash]
+----
+kubectl config set-context --current --namespace=zerodowntime
+----
+Use the Kubernetes Docker _daemon_::
+[source,bash]
+----
+eval $(minikube -p minikube docker-env)
+----
+Get back to the v1 of the application::
+[source,bash]
+----
+git checkout 1.0
+----
+Build the image::
+The build will load the image to the Docker _daemon_.
+[source,bash]
+----
+./mvnw clean compile com.google.cloud.tools:jib-maven-plugin:dockerBuild
+----
+Get to the v2 of the application::
+[source,bash]
+----
+git checkout master
+----
+Build the image and load it to the Docker _daemon_::
+[source,bash]
+----
+./mvnw clean compile com.google.cloud.tools:jib-maven-plugin:dockerBuild
+----
+
+### Execution
+
+Schedule the original database (_blue_)::
+[source,bash]
+----
+kubectl apply -f infrastructure/kube/blue.yml
+----
+Schedule the v1 version of the application::
+[source,bash]
+----
+kubectl apply -f infrastructure/kube/application.yml
+----
+Use the application to add products to the cart of any of the customers::
+It's possible to add products to more than one cart!
+Schedule the target database (_green_)::
+[source,bash]
+----
+kubectl apply -f infrastructure/kube/green.yml
+----
+Schedule the CDC job from _blue_ to _green_::
+[source,bash]
+----
+kubectl apply -f infrastructure/kube/forward.yml
+----
+Schedule the v2 version of the application::
+[source,bash]
+----
+kubectl apply -f infrastructure/kube/application2.yml
+----
+Continue adding products to the cart::
+At one point, you'll notice the node you were on has changed but keeping you connected with your cart!
