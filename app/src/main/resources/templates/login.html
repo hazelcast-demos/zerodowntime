@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments.html :: head(title='Login')">
+    <title>Login</title>
+</head>
+<body>
+<div class="container">
+    <nav th:replace="fragments.html :: navbar"></nav>
+    <div th:replace="fragments.html :: header(title='Login')"></div>
+</div>
+<div th:replace="fragments.html :: scripts"></div>
+<script type="module" th:src="@{/script/module/login.js}"></script>
+</body>
+</html>

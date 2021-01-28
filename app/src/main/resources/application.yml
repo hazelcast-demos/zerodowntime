@@ -1,0 +1,3 @@
+spring.jpa.open-in-view: false
+info.app.version: @project.version@
+server.forward-headers-strategy: native
