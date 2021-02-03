@@ -1,8 +1,7 @@
 package org.hazelcast.zerodowntime.checkout;
 
-import org.hazelcast.zerodowntime.cart.CartLinesRepository;
+import org.hazelcast.zerodowntime.cart.CartRepository;
 import org.hazelcast.zerodowntime.customer.CustomerView;
-import org.hazelcast.zerodowntime.entity.CartLine;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,17 +16,17 @@ import java.math.BigDecimal;
 @Controller
 public class CheckoutController {
 
-    private final CartLinesRepository repository;
+    private final CartRepository repository;
 
-    public CheckoutController(CartLinesRepository repository) {
+    public CheckoutController(CartRepository repository) {
         this.repository = repository;
     }
 
     @GetMapping("checkout")
     public String displayCheckout(HttpSession session, Model model) {
         var customer = (CustomerView) session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME);
-        var cartLines = repository.findAllByCustomer(customer.getId());
-        model.addAttribute("checkout", new CheckoutView(cartLines));
+        var cart = repository.findWithLinesByCustomerId(customer.getId());
+        model.addAttribute("checkout", new CheckoutView(cart));
         return "checkout";
     }
 
@@ -36,8 +35,8 @@ public class CheckoutController {
     public BigDecimal deleteCartLine(@PathVariable Long productId, HttpSession session) {
         var customer = (CustomerView) session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME);
         var customerId = customer.getId();
-        repository.delete(new CartLine(customerId, productId));
-        var cartLines = repository.findAllByCustomer(customerId);
-        return new CheckoutView(cartLines).getPrice();
+        repository.deleteByCustomerIdAndProductId(customerId, productId);
+        var cart = repository.findWithLinesByCustomerId(customerId);
+        return new CheckoutView(cart).getPrice();
     }
 }
