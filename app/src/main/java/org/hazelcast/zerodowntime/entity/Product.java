@@ -1,12 +1,11 @@
 package org.hazelcast.zerodowntime.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-public class Product implements Serializable {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +17,7 @@ public class Product implements Serializable {
     /** Mandated by JPA. */
     protected Product() {}
 
-    Product(Long id) {
+    public Product(Long id) {
         this.id = id;
     }
 
