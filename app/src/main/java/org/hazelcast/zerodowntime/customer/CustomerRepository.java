@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    @Override
-    @Query("SELECT c FROM Customer c LEFT JOIN FETCH c.cartLines where c.id = :id")
-    Customer getOne(@Param("id") Long id);
+    @Query("SELECT cust FROM Customer cust LEFT JOIN FETCH cust.cart cart LEFT JOIN FETCH cart.cartLines WHERE cust.id = :id")
+    Customer findByIdWithCartLines(@Param("id") Long id);
 }
