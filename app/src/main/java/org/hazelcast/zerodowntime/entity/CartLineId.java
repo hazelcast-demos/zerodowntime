@@ -1,5 +1,6 @@
 package org.hazelcast.zerodowntime.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
@@ -8,8 +9,8 @@ import java.util.Objects;
 @Embeddable
 public class CartLineId implements Serializable {
 
-    @ManyToOne
-    private Customer customer;
+    @Column(name = "CART_ID")
+    private Long cartId;
 
     @ManyToOne
     private Product product;
@@ -17,8 +18,8 @@ public class CartLineId implements Serializable {
     /** Mandated by JPA. */
     protected CartLineId() {}
 
-    public CartLineId(Long customerId, Long productId) {
-        this.customer = new Customer(customerId);
+    public CartLineId(Long cartId, Long productId) {
+        this.cartId = cartId;
         this.product = new Product(productId);
     }
 
@@ -31,11 +32,11 @@ public class CartLineId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CartLineId that = (CartLineId) o;
-        return Objects.equals(customer, that.customer) && Objects.equals(product, that.product);
+        return Objects.equals(cartId, that.cartId) && Objects.equals(product, that.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customer, product);
+        return Objects.hash(cartId, product);
     }
 }
