@@ -1,8 +1,9 @@
 package org.hazelcast.zerodowntime;
 
 import com.hazelcast.config.*;
-import org.hazelcast.zerodowntime.cart.CartLinesRepository;
+import org.hazelcast.zerodowntime.cart.CartRepository;
 import org.hazelcast.zerodowntime.cart.CartService;
+import org.hazelcast.zerodowntime.customer.CustomerRepository;
 import org.hazelcast.zerodowntime.operation.OperationContext;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.SpringApplication;
@@ -23,8 +24,8 @@ import java.util.stream.Stream;
 public class ZerodowntimeApplication {
 
     @Bean
-    public CartService cartService(CartLinesRepository repository) {
-        return new CartService(repository);
+    public CartService cartService(CustomerRepository customerRepository, CartRepository cartRepository) {
+        return new CartService(customerRepository, cartRepository);
     }
 
     @Bean
