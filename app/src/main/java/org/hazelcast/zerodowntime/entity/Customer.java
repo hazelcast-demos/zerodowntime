@@ -1,25 +1,30 @@
 package org.hazelcast.zerodowntime.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Customer implements Serializable {
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
-    private List<CartLine> cartLines;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Cart cart;
     private String name;
 
-    /** Mandated by JPA.*/
+    /**
+     * Mandated by JPA.
+     */
     protected Customer() {}
 
     Customer(Long id) {
         this.id = id;
+    }
+
+    public Cart getCart() {
+        return cart;
     }
 
     public Long getId() {
@@ -30,8 +35,8 @@ public class Customer implements Serializable {
         return name;
     }
 
-    public List<CartLine> getCartLines() {
-        return cartLines;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     @Override

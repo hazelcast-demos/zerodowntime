@@ -1,38 +1,35 @@
 package org.hazelcast.zerodowntime.entity;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
-import java.io.Serializable;
+import javax.persistence.*;
 
 @Entity
-@NamedQuery(
-    name = "CartLine.findAllByCustomer",
-    query = "SELECT line FROM CartLine line WHERE line.id.customer.id = ?1"
-)
-public class CartLine implements Serializable {
+public class CartLine {
 
-    @EmbeddedId
-    private CartLineId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private int quantity;
+
+    @ManyToOne
+    private Product product;
 
     /** Mandated by JPA. */
     protected CartLine() {}
-
-    public CartLine(Long customerId, Long productId) {
-        id = new CartLineId(customerId, productId);
-        this.quantity = 0;
-    }
 
     public void incrementQuantity() {
         quantity++;
     }
 
-    public CartLineId getId() {
-        return id;
+    public CartLine(Product product) {
+        this.product = product;
+        this.quantity = 1;
     }
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public Product getProduct() {
+        return product;
     }
 }
