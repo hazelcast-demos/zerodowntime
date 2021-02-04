@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zerodowntime
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forward
+  namespace: zerodowntime
+spec:
+  replicas: 1
+  minReadySeconds: 2
+  selector:
+    matchLabels:
+      direction: forward
+  template:
+    metadata:
+      labels:
+        direction: forward
+    spec:
+      containers:
+        - name: forward
+          image: hazelcast/forward:2.0
+          imagePullPolicy: Never
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "3Gi"
+          env:
+            - name: MYSQL_SOURCE_HOST
+              value: blue
+            - name: MYSQL_SOURCE_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: parameters
+                  key: mysql_user
+            - name: MYSQL_SOURCE_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: parameters
+                  key: mysql_password
+            - name: MYSQL_TARGET_URL
+              value: jdbc:mysql://green:3306/shop
+            - name: MYSQL_TARGET_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: parameters
+                  key: mysql_user
+            - name: MYSQL_TARGET_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: parameters
+                  key: mysql_password
