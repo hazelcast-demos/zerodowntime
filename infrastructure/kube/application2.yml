@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zerodowntime
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: zerodowntime
+  name: app-service
+spec:
+  selector:
+    role: app
+  ports:
+    - name: web
+      port: 8080
+      nodePort: 30002
+    - name: hazelcast
+      port: 5701
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application
+  namespace: zerodowntime
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      role: app
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        role: app
+    spec:
+      serviceAccountName: hazelcast-service-account
+      containers:
+        - name: shop
+          image: hazelcast/hzshop:2.0
+          imagePullPolicy: Never
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "3Gi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+          readinessProbe:
+            periodSeconds: 3
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+          startupProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+          env:
+            - name: spring.datasource.url
+              value: jdbc:mysql://green:3306/shop
+            - name: spring.datasource.username
+              valueFrom:
+                configMapKeyRef:
+                  name: parameters
+                  key: mysql_user
+            - name: spring.datasource.password
+              valueFrom:
+                configMapKeyRef:
+                  name: parameters
+                  key: mysql_password
+            - name: spring.profiles.active
+              value: deploy
+          ports:
+            - containerPort: 8080
+            - containerPort: 5701
