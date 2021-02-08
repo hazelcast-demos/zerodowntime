@@ -10,7 +10,7 @@
     </parent>
     <artifactId>forward</artifactId>
     <properties>
-        <jet.version>4.3</jet.version>
+        <jet.version>4.4</jet.version>
     </properties>
     <build>
         <plugins>
