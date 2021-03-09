@@ -1,0 +1,10 @@
+apiVersion: v2
+name: application
+description: Green (target) database
+type: application
+version: 1.0.0
+appVersion: "green"
+dependencies:
+  - name: database
+    version: 1.0.0
+    repository: file://../database
