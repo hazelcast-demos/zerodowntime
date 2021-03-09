@@ -1,0 +1,6 @@
+dependencies:
+- name: database
+  repository: file://../database
+  version: 1.0.0
+digest: sha256:5c3ad74892b553c05339eb704087518acbfed459625bc3a1d41de1c6e4324642
+generated: "2021-02-09T15:45:20.091735+01:00"

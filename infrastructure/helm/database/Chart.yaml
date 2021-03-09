@@ -1,0 +1,6 @@
+apiVersion: v2
+name: database
+description: Library for common configuration of the Blue and Green databases
+type: library
+version: 1.0.0
+appVersion: "1.0.0"

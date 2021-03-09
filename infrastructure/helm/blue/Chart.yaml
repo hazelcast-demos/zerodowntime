@@ -1,0 +1,10 @@
+apiVersion: v2
+name: blue
+description: Blue (origin) database
+type: application
+version: 1.0.0
+appVersion: "blue"
+dependencies:
+  - name: database
+    version: 1.0.0
+    repository: file://../database

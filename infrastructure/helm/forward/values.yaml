@@ -1,0 +1,5 @@
+color: blue
+config: parameters
+resources:
+  cpu: "500m"
+  memory: "3Gi"

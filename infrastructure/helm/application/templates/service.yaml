@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: zerodowntime
+  name: app-service
+spec:
+  selector:
+    role: app
+  ports:
+    - name: web
+      port: 8080
+      nodePort: 30002
+    - name: hazelcast
+      port: 5701
+  type: NodePort

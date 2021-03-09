@@ -1,0 +1,3 @@
+{{- template "database.service" . }}
+---
+{{- template "database.deployment" . }}

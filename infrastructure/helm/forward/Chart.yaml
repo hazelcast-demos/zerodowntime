@@ -1,0 +1,6 @@
+apiVersion: v2
+name: forward
+description: The forward job
+type: application
+version: 1.0.0
+appVersion: "2.0"
