@@ -10,7 +10,7 @@
     </parent>
     <artifactId>app</artifactId>
     <properties>
-        <spring.version>2.5.0</spring.version>
+        <spring.version>2.5.2</spring.version>
         <sonar.sources>src/main/java,src/main/resources/static/script/module,src/main/resources/templates</sonar.sources>
     </properties>
     <build>
@@ -125,7 +125,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>5.0.1</version>
+            <version>5.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
