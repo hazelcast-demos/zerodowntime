@@ -10,7 +10,7 @@
     </parent>
     <artifactId>app</artifactId>
     <properties>
-        <spring.version>2.5.4</spring.version>
+        <spring.version>2.5.5</spring.version>
         <sonar.sources>src/main/java,src/main/resources/static/script/module,src/main/resources/templates</sonar.sources>
     </properties>
     <build>
