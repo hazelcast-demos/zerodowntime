@@ -10,7 +10,7 @@
     </parent>
     <artifactId>forward</artifactId>
     <properties>
-        <hazelcast.version>5.0</hazelcast.version>
+        <hazelcast.version>5.0.1</hazelcast.version>
     </properties>
     <build>
         <plugins>
